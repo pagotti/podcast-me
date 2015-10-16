@@ -58,7 +58,7 @@ function beforePage(i) {
             var y = capturePixel(cutter.css("top"));
             var w = capturePixel(cutter.css("width"));
             var h = capturePixel(cutter.css("height"));
-            ctx.drawImage($("#avatarImg")[0], x, y, w, h, 0, 0, canvas.width-2, canvas.height-2);
+            ctx.drawImage($("#avatarImg")[0], x, y, w, h, 0, 0, canvas.width, canvas.height);
         }
         
     } else if (page == 2 && i > 0) {
@@ -145,7 +145,34 @@ $(document).ready(function(){
         reader.onload = function(event){
             var img = new Image();
             img.onload = function(){
-                ctx.drawImage(img, 0, 0, canvas.width-2, canvas.height-2);
+                if (img.width != img.height) {
+                    if (img.height < canvas.height && img.width < canvas.width) {
+                        // centralize
+                        var x = Math.floor((canvas.width - img.width)/2);
+                        var y = Math.floor((canvas.height - img.height)/2);
+                        ctx.drawImage(img, x, y);
+                    } else {
+                        var x = 0; y = 0; 
+                        var w, h, factor;
+                        if (img.height > img.width) {
+                            // fit to height
+                            factor = canvas.height / img.height;
+                            h = Math.floor(factor * img.height);
+                            w = Math.floor(factor * img.width);
+                            x = Math.floor((canvas.width - w)/2);
+                        } else {
+                            // fit to width
+                            factor = canvas.width / img.width;
+                            h = Math.floor(factor * img.height);
+                            w = Math.floor(factor * img.width);
+                            y = Math.floor((canvas.height - h)/2);
+                        }
+                        ctx.drawImage(img, 0, 0, img.width, img.height, x, y, w, h);
+                    };
+                } else {
+                    // fit to content
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                };
             }
             img.src = event.target.result;
         }
@@ -167,11 +194,9 @@ $(document).ready(function(){
         var profile = $("#profile");
         var icon = $(this).data("icon");
         if (!profile.data("icon") != icon) {
-            //profile.removeClass(profile.data("icon"));
             profile.data("icon", icon);
             profile.css("background-image", "url(images/" + icon + ".png)");
             changeProfileColor($("#color").val());
-            //profile.addClass(icon);
         }
         $(".profile").each(function() { $(this).removeClass("active"); });
         $(this).addClass("active");
@@ -197,11 +222,5 @@ $(document).ready(function(){
 
     $("#next").on("click", function() { navigate(1) });
     $("#previous").on("click", function() { navigate(-1) });
-    
-    // check for download button support
-    var a = document.createElement('a');
-    if (typeof a.download == "undefined") {
-        $("#download").popover();    
-    }    
     
 });
