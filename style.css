@@ -1,0 +1,93 @@
+body {
+	background-color: #e0e0e0;
+}
+
+h6 {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+footer {
+    border-top: 1px dotted black;
+    border-bottom: 1px dotted black;
+}
+
+#mash {
+    border: 1px dotted black;
+    background-color: white;
+    width: 300px;
+    height: 300px;
+    margin-left: auto;
+    margin-right: auto;    
+}
+
+#avatarImg {
+    border: 0;
+    background-image: url(images/avatar.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    position: absolute;
+}
+
+.canvasWrap {
+    border: 0;
+    width:300px; 
+    height:300px;
+    position: relative; 
+}
+
+#cutter {
+    border: 1px solid red;    
+    width: 200px;
+    height: 200px;
+    left: 50px;
+    top: 50px;
+    position: relative;
+}
+
+#avatarWork {
+    border: 0;
+    position: absolute;
+}
+
+#avatarFinal {
+    border: 0;
+}
+
+#profileContainer {
+    position:absolute; 
+    width:400px; 
+    height:400px; 
+    top=-50px; 
+    left=-50px; 
+    border: 1px solid black;  
+}
+
+#profile {
+    border: 1px dashed gray;    
+    width: 128px;
+    height: 128px;
+    left: 0px;
+    top: 0px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-image: url(images/audio1.png);
+    position: relative;
+}
+
+.footer {
+    background-color: white;
+}
+
+.spacer {
+    margin-top: 10px;
+}
+
+.center {
+    text-align: center;
+}
+
+ul {
+	list-style-type: none;
+}
+
