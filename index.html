@@ -20,6 +20,8 @@
         <script type="text/javascript" src="js/jquery.ui.touch-punch.min.js"></script>
         <script type="text/javascript" src="js/jquery.simplecolorpicker.js"></script>
         <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/canvas-toBlob.js"></script>
+        <script type="text/javascript" src="js/FileSaver.min.js"></script>
         <script type="text/javascript" src="js/app.js"></script>
 
 	</head>
@@ -119,7 +121,7 @@
                             <button type="button" class="btn btn-default downsize" title="YouTube 250x250" data-size="250" data-prefix="yt"><i class="fa fa-lg fa-youtube"></i></button>
                             <button type="button" class="btn btn-default downsize" title="Instagram 110x110" data-size="110" data-prefix="insta"><i class="fa fa-lg fa-instagram"></i></button>
                             <button type="button" class="btn btn-default downsize" title="Pinterest 165x165" data-size="165" data-prefix="pin"><i class="fa fa-lg fa-pinterest"></i></button>
-                            <a href="#" class="btn btn-primary" id="download" download="tt_podcastfied">
+                            <a href="#" class="btn btn-primary" id="download">
                                 <i class="fa fa-floppy-o"></i> Salvar                        
                             </a>
                         </div>              
@@ -145,13 +147,20 @@
                         <h4 class="modal-title">Sobre o Podcast-me</h4>
                     </div>
                     <div class="modal-body">
-                        <h4>Vagner Pagotti <a href="https://twitter.com/skeletony" target="_blank" title="@skeletony" alt="@skeletony"><i class="fa fa-twitter"></i></a></h4>
+                        <h4><i class="fa fa-copyright">2015</i> Vagner Pagotti <a href="https://twitter.com/skeletony" target="_blank" title="@skeletony" alt="@skeletony"><i class="fa fa-twitter"></i></a></h4>
+                        <h5>Licenciado pela <a href="http://choosealicense.com/licenses/mit/" target="_blank">MIT License</a></h5>
                         <h5>Open Source at <a href="https://github.com/pagotti/podcast-me" target="_blank">Github</a></h5>
-                        <h5>Licenciado através da <a href="http://choosealicense.com/licenses/mit/" target="_blank">Licença MIT</a></h5>
                         <p><h5><strong>Podcast-me</strong> é um projeto para comemorar o dia 21 de outubro, que é o <strong>Dia do Podcast</strong> e é dedicado a todos os ouvintes, podcasters e simpatizantes. Participe!</h5></p>
-                        <h6>Touch support by <a href="http://touchpunch.furf.com/" target="_blank" title="Touch Punch">jQuery UI Touch Punch</a></h6>
-                        <h6><a href="https://github.com/tkrotoff/jquery-simplecolorpicker" target="_blank">Simple Colorpicker</a> by Tanguy Krotoff</h6>
-                        <h6>Icon made by <a href="http://www.freepik.com" target="_blank" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" target="_blank" title="Flaticon">www.flaticon.com</a> is licensed under <a href="http://creativecommons.org/licenses/by/3.0/" target="_blank" title="Creative Commons BY 3.0">CC BY 3.0</a></h6>
+                        <h5>Esse software utiliza as seguintes bibliotecas:</h5>
+                        <h6><i class="fa fa-file-code-o"></i> <a href="http://jquery.com/" target="_blank">jQuery</a></h6>
+                        <h6><i class="fa fa-file-code-o"></i> <a href="http://jqueryui.com/" target="_blank">jQuery UI</a></h6>
+                        <h6><i class="fa fa-file-code-o"></i> <a href="http://getbootstrap.com/" target="_blank">Bootstrap</a></h6>
+                        <h6><i class="fa fa-file-code-o"></i> <a href="http://fontawesome.io/" target="_blank">Font Awesome</a></h6>
+                        <h6><i class="fa fa-file-code-o"></i> <a href="http://touchpunch.furf.com/" target="_blank">jQuery UI Touch Punch</a> by David Furfero</h6>
+                        <h6><i class="fa fa-file-code-o"></i> <a href="https://github.com/tkrotoff/jquery-simplecolorpicker" target="_blank">Simple Colorpicker</a> by Tanguy Krotoff</h6>
+                        <h6><i class="fa fa-file-code-o"></i> <a href="https://github.com/eligrey/FileSaver.js" target="_blank">File Saver</a> by Eli Grey</h6> 
+                        <h6><i class="fa fa-file-code-o"></i> <a href="https://github.com/eligrey/canvas-toBlob.js/" target="_blank">Canvas toBlob</a> by Eli Grey and Devin Samarin</h6>
+                        <h5>Icon made by <a href="http://www.freepik.com" target="_blank" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" target="_blank" title="Flaticon">www.flaticon.com</a> is licensed under <a href="http://creativecommons.org/licenses/by/3.0/" target="_blank" title="Creative Commons BY 3.0">CC BY 3.0</a></h5>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
@@ -169,15 +178,7 @@
                     <div class="modal-body">
                         <p>Esse software não envia a imagem carregada para processamento em um servidor remoto.
                             Toda a carga, processamento e geração da imagem final é feita localmente através de scripts 
-                            que rodam no navegador.</p>
-                        <p>Esse software utiliza as seguintes ferramentas abertas e plugins: 
-                            <a href="http://jquery.com/" target="_blank">jQuery</a>, 
-                            <a href="http://jqueryui.com/" target="_blank">jQuery UI</a>, 
-                            <a href="http://getbootstrap.com/" target="_blank">Bootstrap</a>, 
-                            <a href="http://fontawesome.io/" target="_blank">Font Awesome</a>, 
-                            <a href="http://touchpunch.furf.com/" target="_blank">Touch Punch</a> e 
-                            <a href="https://github.com/tkrotoff/jquery-simplecolorpicker" target="_blank">Colorpicker</a>.
-                        Caso queira saber mais sobre os termos de privacidade dessas ferramentas, consulte-os através dos links.</p>
+                            que rodam no próprio navegador.</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>

@@ -1,85 +1,95 @@
-var page = 1;
-var maxPage = 3;
+/*
+
+2015 By Vagner Pagotti (@skeletony)
+MIT License
+
+*/
+
+var page = 1, maxPage = 3;
 
 function navigate(i) {
     beforePage(i);
 
-    $("[data-page]").each(function() {
-        if ($(this).data("page") == page)
+    $("[data-page]").each(function () {
+        if ($(this).data("page") === page) {
             $(this).addClass("hide");
+        }
     });
     
     page += i;
         
     $("[data-page]").each(function() {
-        if ($(this).data("page") == page)
+        if ($(this).data("page") === page) {
             $(this).removeClass("hide");
+        }
     });
     
     afterPage(i);
     
     // refresh pager
-    if (page == 1)
+    if (page === 1)
         $("#previous").addClass("hide");
     else
         $("#previous").removeClass("hide");
-    if (page == maxPage)
+    if (page === maxPage)
         $("#next").addClass("hide");
     else
         $("#next").removeClass("hide");
 }
 
 function captureUrl(v) {
-    var re = /url\((['"]?.+['"]?)\)/gi;
-    var match = re.exec(v);
-    if (match)
+    var re, match;
+    re = /url\(('?[^']+'?|"?[^"]+"?)\)/gi;
+    match = re.exec(v);
+    if (match) {
         return match[1];
+    }
 }
 
 function capturePixel(v) {
-    var re = /([0-9]+)px/gi;
-    var match = re.exec(v);
-    if (match)
+    var re, match;
+    re = /([0-9]+)px/gi,
+    match = re.exec(v);
+    if (match)  {
         return match[1];
+    }
 }
 
 function beforePage(i) {
-    var ctx;
-    var canvas;
-    if (page == 1 && i > 0) {
+    var ctx, canvas, cutter, profile, url, img, x, y, w, h;
+    if (page === 1 && i > 0) {
         canvas = $("#avatarWork")[0];
         ctx = canvas.getContext('2d');
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        var cutter = $("#cutter");
+        cutter = $("#cutter");
         if (cutter.hasClass("hide")) {
             ctx.drawImage($("#avatarImg")[0], 0, 0);
         } else {
-            var x = capturePixel(cutter.css("left"));
-            var y = capturePixel(cutter.css("top"));
-            var w = capturePixel(cutter.css("width"));
-            var h = capturePixel(cutter.css("height"));
+            x = capturePixel(cutter.css("left"));
+            y = capturePixel(cutter.css("top"));
+            w = capturePixel(cutter.css("width"));
+            h = capturePixel(cutter.css("height"));
             ctx.drawImage($("#avatarImg")[0], x, y, w, h, 0, 0, canvas.width, canvas.height);
         }
         
-    } else if (page == 2 && i > 0) {
+    } else if (page === 2 && i > 0) {
         canvas = $("#avatarFinal")[0];
         ctx = canvas.getContext('2d');
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage($("#avatarWork")[0], 0, 0);
-        var profile = $("#profile");
-        var url = captureUrl(profile.css("background-image"));
-        var x = capturePixel(profile.css("left"));
-        var y = capturePixel(profile.css("top"));
-        var w = capturePixel(profile.css("width"));
-        var h = capturePixel(profile.css("height"));
-        var img = new Image();
+        profile = $("#profile");
+        url = captureUrl(profile.css("background-image"));
+        x = capturePixel(profile.css("left"));
+        y = capturePixel(profile.css("top"));
+        w = capturePixel(profile.css("width"));
+        h = capturePixel(profile.css("height"));
+        img = new Image();
         if (url) {
             img.onload = function() {
                 ctx.drawImage(img, x, y, w, h);
-                $("#download")[0].href = canvas.toDataURL("image/png");
-            };
+            }
             img.src = url;
-        };
+        }
     }
     
 }
@@ -88,72 +98,77 @@ function afterPage(i) {
 }
 
 function getCanvas(w, h) {
-  var c = document.createElement('canvas');
-  c.width = w;
-  c.height = h;
-  return c;
-};
+    var c = document.createElement('canvas');
+    c.width = w;
+    c.height = h;
+    return c;
+}
 
 function getChangedPixels(pix, color) {
-    var r = parseInt(color.substr(1,2), 16);
-    var g = parseInt(color.substr(3,2), 16);
-    var b = parseInt(color.substr(5,2), 16);
-    for (var i=0;i<pix.data.length;i+=4) 
-        if (pix.data[i+3] != 0) { 
-            pix.data[i]=r;
-            pix.data[i+1]=g;
-            pix.data[i+2]=b;
+    var i, r, g, b;
+    r = parseInt(color.substr(1, 2), 16);
+    g = parseInt(color.substr(3, 2), 16);
+    b = parseInt(color.substr(5, 2), 16);
+    for (i = 0; i < pix.data.length; i += 4) {
+        if (pix.data[i + 3] != 0) { 
+            pix.data[i] = r;
+            pix.data[i + 1] = g;
+            pix.data[i + 2] = b;
         }
+    }
     return pix;
-};
+}
 
 function getImageFromSelector(sel) {
-    var url = captureUrl(sel.css("background-image"));
-    var x = capturePixel(sel.css("left"));
-    var y = capturePixel(sel.css("top"));
-    var w = capturePixel(sel.css("width"));
-    var h = capturePixel(sel.css("height"));
-    var canvas = getCanvas(w, h);
-    var ctx = canvas.getContext("2d");
-    var img = new Image();
+    var url, w, h, canvas, ctx, img;
+    url = captureUrl(sel.css("background-image"));
+    w = capturePixel(sel.css("width"));
+    h = capturePixel(sel.css("height"));
+    canvas = getCanvas(w, h);
+    ctx = canvas.getContext("2d");
+    img = new Image();
     if (url) {
         img.onload = function() {
-            ctx.drawImage(img, x, y, w, h);
-        };
+            ctx.drawImage(img, 0, 0, w, h);
+        }
         img.src = url;
-    };
-    return img;    
-};
+    }
+    return img;
+}
 
 function changeProfileColor(color) {
-    var img = getImageFromSelector($("#profile"));        
-    var canvas = getCanvas(img.width, img.height);
-    var ctx = canvas.getContext("2d");
+    var pix, img, canvas, ctx, profile;
+    profile = $("#profile");
+    img = getImageFromSelector(profile);
+    canvas = getCanvas(img.width, img.height);
+    ctx = canvas.getContext("2d");
     ctx.drawImage(img, 0, 0);
-    var data = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    ctx.putImageData(getChangedPixels(data, color), 0, 0);
-    $("#profile").css("background-image", "url(" + canvas.toDataURL("image/png") + ")");
+    pix = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    ctx.putImageData(getChangedPixels(pix, color), 0, 0);
+    profile.css("background-image", "url(" + canvas.toDataURL("image/png") + ")");
 }
 
 $(document).ready(function(){
     $("#loadButton").on("click", function() { $("#imageLoader").click(); });
+
     $("#imageLoader").change(function(e) {
-        var reader = new FileReader();
-        var canvas = $("#avatarImg")[0];
-        var ctx = canvas.getContext('2d');
+        var reader, canvas, ctx, img, x, y, w, h, factor;
+        reader = new FileReader();
+        canvas = $("#avatarImg")[0];
+        ctx = canvas.getContext('2d');
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         reader.onload = function(event){
-            var img = new Image();
+            img = new Image();
             img.onload = function(){
                 if (img.width != img.height) {
                     if (img.height < canvas.height && img.width < canvas.width) {
                         // centralize
-                        var x = Math.floor((canvas.width - img.width)/2);
-                        var y = Math.floor((canvas.height - img.height)/2);
+                        x = Math.floor((canvas.width - img.width)/2);
+                        y = Math.floor((canvas.height - img.height)/2);
                         ctx.drawImage(img, x, y);
                     } else {
-                        var x = 0; y = 0; 
-                        var w, h, factor;
+                        x = 0; y = 0; 
+                        w, h, factor;
                         if (img.height > img.width) {
                             // fit to height
                             factor = canvas.height / img.height;
@@ -168,11 +183,11 @@ $(document).ready(function(){
                             y = Math.floor((canvas.height - h)/2);
                         }
                         ctx.drawImage(img, 0, 0, img.width, img.height, x, y, w, h);
-                    };
+                    }
                 } else {
                     // fit to content
                     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                };
+                }
             }
             img.src = event.target.result;
         }
@@ -191,8 +206,9 @@ $(document).ready(function(){
                   resizable({aspectRatio: true, containment: "parent"});
     
     $(".profile").on("click", function() {
-        var profile = $("#profile");
-        var icon = $(this).data("icon");
+        var profile, icon;
+        profile = $("#profile");
+        icon = $(this).data("icon");
         if (!profile.data("icon") != icon) {
             profile.data("icon", icon);
             profile.css("background-image", "url(images/" + icon + ".png)");
@@ -210,14 +226,22 @@ $(document).ready(function(){
     $(".downsize").on("click", function() {
         $(".downsize").each(function() { $(this).removeClass("active"); });
         $(this).addClass("active");
-        var size = $(this).data("size");
-        var canvas = document.createElement("canvas");
-        canvas.width = size;
-        canvas.height = size;
-        var ctx = canvas.getContext("2d");
+    });
+    
+    $("#download").on("click", function() {
+        var size, prefix, canvas, ctx;
+        size = $(".downsize").filter(".active").data("size");
+        prefix = $(".downsize").filter(".active").data("prefix");
+        canvas = getCanvas(size, size);
+        ctx = canvas.getContext("2d");
         ctx.drawImage($("#avatarFinal")[0], 0, 0, size, size);
-        $("#download")[0].download = $(this).data("prefix") + "_podcastfied";
-        $("#download")[0].href = canvas.toDataURL("image/png");
+        if (typeof document.createElement("a").download === "string") {
+            $("#download")[0].download = prefix + "_podcastfied";
+            $("#download")[0].href = canvas.toDataURL("image/png");
+        } else {
+            // alternative for browser without support to html5 download attribute
+            canvas.toBlob(function(b) { saveAs(b, prefix + "_podcastfied.png") });
+        }
     });
 
     $("#next").on("click", function() { navigate(1) });
