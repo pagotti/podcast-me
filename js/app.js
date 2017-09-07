@@ -39,8 +39,8 @@ function navigate(i) {
 
 function captureUrl(v) {
     var re, match;
-    re = /url\(('?[^']+'?|"?[^"]+"?)\)/gi;
-    match = re.exec(v);
+    re = /url\((.+)\)/gi;
+    match = re.exec(v.replace(/["']/g,''));
     if (match) {
         return match[1];
     }
@@ -119,7 +119,7 @@ function getChangedPixels(pix, color) {
     return pix;
 }
 
-function getImageFromSelector(sel) {
+function getImageFromSelector(sel, onReady) {
     var url, w, h, canvas, ctx, img;
     url = captureUrl(sel.css("background-image"));
     w = capturePixel(sel.css("width"));
@@ -130,22 +130,23 @@ function getImageFromSelector(sel) {
     if (url) {
         img.onload = function() {
             ctx.drawImage(img, 0, 0, w, h);
+			onReady(img);
         }
         img.src = url;
     }
-    return img;
 }
 
 function changeProfileColor(color) {
     var pix, img, canvas, ctx, profile;
     profile = $("#profile");
-    img = getImageFromSelector(profile);
-    canvas = getCanvas(img.width, img.height);
-    ctx = canvas.getContext("2d");
-    ctx.drawImage(img, 0, 0);
-    pix = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    ctx.putImageData(getChangedPixels(pix, color), 0, 0);
-    profile.css("background-image", "url(" + canvas.toDataURL("image/png") + ")");
+    getImageFromSelector(profile, function (img) {
+		canvas = getCanvas(img.width, img.height);
+		ctx = canvas.getContext("2d");
+		ctx.drawImage(img, 0, 0);
+		pix = ctx.getImageData(0, 0, canvas.width, canvas.height);
+		ctx.putImageData(getChangedPixels(pix, color), 0, 0);
+		profile.css("background-image", "url(" + canvas.toDataURL("image/png") + ")");
+	});
 }
 
 $(document).ready(function(){
